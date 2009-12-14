@@ -1,0 +1,16 @@
+[% INCLUDE include_header.html %]
+
+Paste text and click submit to get a Pastique URL.
+
+<form action="/paste/" method="POST">
+  <div>
+    <label>Title</label>
+    <input name="title" type="text" value="Some sample text" />
+  </div>
+  <div>
+    <textarea class="code-entry" name="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
+  </div>
+  <input type="submit" value="Create" />
+</form>
+
+[% INCLUDE include_footer.html %]  

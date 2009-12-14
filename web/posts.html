@@ -1,0 +1,10 @@
+[% INCLUDE include_header.html %]
+<h1>Smart Forum</h1>
+<h2>Forums</h2>
+<a href="/posts/new">Create new post&hellip;</a>
+[% IF posts %]
+    <ul>
+      <li>[% post.title %] | 0 replies</li>
+    </ul>
+[% END %]
+[% INCLUDE include_footer.html %]
