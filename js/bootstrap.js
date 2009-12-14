@@ -11,6 +11,7 @@ var highlights = {
     'java': 'Java',
     'jScript': 'JavaScript',
     'php': 'PHP',
+    'plain': 'Plain text',
     'python': 'Python',
     'ruby': 'Ruby',
     'sql': 'SQL',
@@ -20,6 +21,7 @@ var highlights = {
 }
 
 GET("/paste/new", function() {
+    this.highlights = highlights;
     return template("new.html");
 });
 
@@ -47,7 +49,6 @@ POST(/\/paste\/?$/, function() {
 });
 
 function setHighlight(paste) {
-    // converts the 
     // XXX need to find out how to extend ashb's Template's filters
     var highlight = paste.highlight;
     paste.highlightPretty = highlights[highlight];

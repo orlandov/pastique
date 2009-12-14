@@ -26,18 +26,18 @@
     </div>
     <div class="yui-g">
       <select name="highlight">
-        <option value="cpp">C++</option>
-        <option value="cSharp">C#</option>
-        <option value="css">CSS</option>
-        <option value="java">Java</option>
-        <option value="jScript" selected="selected">JavaScript</option>
-        <option value="php">PHP</option>
-        <option value="python">Python</option>
-        <option value="ruby">Ruby</option>
-        <option value="sql">SQL</option>
-        <option value="vb">VB</option>
-        <option value="xml">XML</option>
-        <option value="perl">Perl</option>
+        [% FOREACH h IN highlights.keys %]
+          [% IF h == "jScript" %]
+            [% SET selected = "1" %]
+          [% ELSE %]
+            [% SET selected = "" %]
+          [% END %]
+
+          <option value="[% h %]"
+            [%   selected ? "selected=\"selected\"" : "" %]>
+            [% highlights.$h %]
+          </option>
+        [% END %]
       </select>
     </div>
   </div>
