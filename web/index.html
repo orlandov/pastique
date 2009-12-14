@@ -1,28 +1,29 @@
 [% INCLUDE include_header.html %]
 
-<p class="new-paste">
-  <a href="/paste/new">New Paste&hellip;</a>
-</p>
-
-<ul>
-  [% FOR paste IN pastes %]
-    <li>
-      <div>
-        <a href="/paste/[% paste.id %]">
-          [%- IF paste.title %]
-            [% paste.title %]
-          [% ELSE %]
-            <span class="no-title">untitled</span>
-          [% END -%]
-        </a>
-        &mdash;
-        <a href="/paste/[% paste.id %]/delete">del</a>
-      </div>
-      <small>
-        [% paste.created %]
-      </small>
-    </li>
-  [% END %]
-</ul>
+<div class="yui-gf">
+  <div class="yui-g first">
+    <p class="new-paste">
+      <a href="/paste/new">New Paste&hellip;</a>
+    </p>
+  </div>
+  <div class="yui-g">
+    <h1>Recent</h1>
+    <br/>
+    [% IF pastes.size == 0 %]
+    <p>
+      <em>No pastes exist at this time. <a href="/paste/new">Create a new one?</a></em>
+    </p>
+    [% ELSE %]
+    <ul>
+      [% FOR paste IN pastes %]
+        <li>
+        [% INCLUDE include_paste.html
+           paste = paste %]
+        </li>
+      [% END %]
+    </ul>
+    [% END %]
+  </div>
+</div>
 
 [% INCLUDE include_footer.html %]

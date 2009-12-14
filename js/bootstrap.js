@@ -46,20 +46,26 @@ POST(/\/paste\/?$/, function() {
     return redirect('/paste/' + this.paste.id);
 });
 
+function setHighlight(paste) {
+    // converts the 
+    // XXX need to find out how to extend ashb's Template's filters
+    var highlight = paste.highlight;
+    paste.highlightPretty = highlights[highlight];
+    paste.highlightLower = highlight.toLowerCase();
+    paste.highlightCap =
+        highlight.substring(0, 1).toUpperCase() + highlight.slice(1);
+}
+
 GET(/\/paste\/(.+)$/, function (pasteId) {
     this.paste = Paste.get(pasteId);
-    var highlight = this.paste.highlight;
-
-    // XXX need to find out how to extend ashb's Template's filters
-    this.paste.highlightPretty = highlights[highlight];
-    this.paste.highlightLower = highlight.toLowerCase();
-    this.paste.highlightCap =
-        highlight.substring(0, 1).toUpperCase() + highlight.slice(1);
-
+    setHighlight(this.paste);
     return template("paste.html");
 });
 
 GET("/", function() {
     this.pastes = Paste.search({});
+    this.pastes.forEach(function (paste) {
+        setHighlight(paste);    
+    });
     return template('index.html');
 });

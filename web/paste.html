@@ -10,11 +10,8 @@ SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/2.1.36
 SyntaxHighlighter.all();
 </script> 
 
-<p><span class="title">[% paste.title %]</span> &rarr; <em>[% paste.highlightPretty %]</em></p>
-<small>
-[%- IF paste.author %]
-by [% paste.author %]
-[% END %] at [% paste.created %]</small>
+[% INCLUDE include_paste.html
+   paste = paste %]
 
 [% # TODO refactor this out to a template %]
 <script type="syntaxhighlighter" class="brush: [% paste.highlightLower %]"><![CDATA[

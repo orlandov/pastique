@@ -1,5 +1,6 @@
 body {
     font-size: 108%;
+    font-family: monospace;
 }
 
 textarea.paste-entry {
@@ -10,15 +11,17 @@ textarea.paste-entry {
 }
 
 .logo {
+    font-family: cursive;
     font-size: 197%;
-    height: 33px;
-    text-align: right;
+    height: 55px;
+    text-align: left;
     vertical-align: bottom;
 }
 
 .logo a {
     text-decoration: none;
     font-style: italic;
+    color: #BADA55;
 }
 
 input.title {
@@ -33,10 +36,14 @@ input.title {
     font-size: 108%;
 }
 
-.new-paste {
+.new-paste a {
     font-size: 138.5%;
+    color: #B00B13;
 }
 
 .title {
     font-weight: strong;
 }
+
+h1 {
+    font-size: 150%;
