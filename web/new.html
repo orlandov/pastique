@@ -8,9 +8,40 @@ Paste text and click submit to get a Pastique URL.
     <input name="title" type="text" value="Some sample text" />
   </div>
   <div>
+    <label>Highlight</label>
+    <select name="highlight">
+
+<option value="cpp">cpp</option>
+<option value="cSharp">cSharp</option>
+<option value="css">css</option>
+<option value="java">java</option>
+<option value="jScript">jScript</option>
+<option value="php">php</option>
+<option value="python">python</option>
+<option value="ruby">ruby</option>
+<option value="sql">sql</option>
+<option value="vb">vb</option>
+<option value="xml">xml</option>
+<option value="perl">perl</option>
+
+    </select>
+  </div>
+  <div>
     <textarea class="code-entry" name="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</textarea>
   </div>
   <input type="submit" value="Create" />
 </form>
 
 [% INCLUDE include_footer.html %]  
+shBrushCpp.js
+shBrushCSharp.js
+shBrushCss.js
+shBrushJava.js
+shBrushJScript.js
+shBrushPhp.js
+shBrushPython.js
+shBrushRuby.js
+shBrushSql.js
+shBrushVb.js
+shBrushXml.js
+shBrushPerl.js

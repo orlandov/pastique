@@ -22,6 +22,7 @@ POST(/\/paste\/?$/, function() {
     this.paste = new Paste();
     this.paste.title = this.request.body.title;
     this.paste.text = this.request.body.text;
+    this.paste.highlight = this.request.body.highlight;
     this.paste.save()
 
     this.response.code = 201;
@@ -30,6 +31,12 @@ POST(/\/paste\/?$/, function() {
 
 GET(/\/paste\/(.+)$/, function (pasteId) {
     this.paste = Paste.get(pasteId);
+    var highlight = this.paste.highlight;
+
+    // XXX need to find out how to extend ashb's Template's filters
+    this.paste.highlightCap =
+        highlight.substring(0, 1).toUpperCase() + highlight.slice(1);
+
     return template("paste.html");
 });
 
