@@ -16,6 +16,7 @@ textarea.paste-entry {
     height: 55px;
     text-align: left;
     vertical-align: bottom;
+    padding-top: 15px;
 }
 
 .logo a {
