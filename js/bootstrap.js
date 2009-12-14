@@ -3,7 +3,6 @@ system.use("com.joyent.Resource");
 
 var Paste = new Resource("paste");
 
-// XXX use this to generate list of highlights in template
 var highlights = {
     'cpp': 'C++',
     'cSharp': 'C#',
@@ -21,8 +20,11 @@ var highlights = {
     'perl': 'Perl'
 }
 
-GET("/paste/new", function() {
+before(function () {
     this.highlights = highlights;
+});
+
+GET("/paste/new", function() {
     return template("new.html");
 });
 
