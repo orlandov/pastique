@@ -3,6 +3,22 @@ system.use("com.joyent.Resource");
 
 var Paste = new Resource("paste");
 
+// XXX use this to generate list of highlights in template
+var highlights = {
+    'cpp': 'C++',
+    'cSharp': 'C#',
+    'css': 'CSS',
+    'java': 'Java',
+    'jScript': 'JavaScript',
+    'php': 'PHP',
+    'python': 'Python',
+    'ruby': 'Ruby',
+    'sql': 'SQL',
+    'vb': 'VB',
+    'xml': 'XML',
+    'perl': 'Perl'
+}
+
 GET("/paste/new", function() {
     return template("new.html");
 });
@@ -21,6 +37,7 @@ GET(/\/paste\/([^/]+)\/delete$/, function(pasteId) {
 POST(/\/paste\/?$/, function() {
     this.paste = new Paste();
     this.paste.title = this.request.body.title;
+    this.paste.author = this.request.body.author;
     this.paste.text = this.request.body.text;
     this.paste.highlight = this.request.body.highlight;
     this.paste.save()
@@ -34,6 +51,8 @@ GET(/\/paste\/(.+)$/, function (pasteId) {
     var highlight = this.paste.highlight;
 
     // XXX need to find out how to extend ashb's Template's filters
+    this.paste.highlightPretty = highlights[highlight];
+    this.paste.highlightLower = highlight.toLowerCase();
     this.paste.highlightCap =
         highlight.substring(0, 1).toUpperCase() + highlight.slice(1);
 
@@ -42,6 +61,5 @@ GET(/\/paste\/(.+)$/, function (pasteId) {
 
 GET("/", function() {
     this.pastes = Paste.search({});
-
     return template('index.html');
 });

@@ -1,11 +1,20 @@
 [% INCLUDE include_header.html %]
 
-<a href="/paste/new">New Paste&hellip;</a>
+<p class="new-paste">
+  <a href="/paste/new">New Paste&hellip;</a>
+</p>
+
 <ul>
   [% FOR paste IN pastes %]
     <li>
       <div>
-        <a href="/paste/[% paste.id %]">foo [% paste.title %]</a>
+        <a href="/paste/[% paste.id %]">
+          [%- IF paste.title %]
+            [% paste.title %]
+          [% ELSE %]
+            <span class="no-title">untitled</span>
+          [% END -%]
+        </a>
         &mdash;
         <a href="/paste/[% paste.id %]/delete">del</a>
       </div>

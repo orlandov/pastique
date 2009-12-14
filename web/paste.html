@@ -6,14 +6,19 @@
 
 <script src='http://alexgorbatchev.com/pub/sh/2.1.364/scripts/shBrush[% paste.highlightCap %].js' type='text/javascript'></script> 
 <script language='javascript'> 
-SyntaxHighlighter.config.bloggerMode = true;
 SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/2.1.364/scripts/clipboard.swf';
 SyntaxHighlighter.all();
 </script> 
 
-<strong>[% paste.title %]</strong>
-<script type="syntaxhighlighter" class="brush: [% paste.highlight %]"><![CDATA[
+<p><span class="title">[% paste.title %]</span> &rarr; <em>[% paste.highlightPretty %]</em></p>
+<small>
+[%- IF paste.author %]
+by [% paste.author %]
+[% END %] at [% paste.created %]</small>
+
+[% # TODO refactor this out to a template %]
+<script type="syntaxhighlighter" class="brush: [% paste.highlightLower %]"><![CDATA[
 [% paste.text %]
-]]>
-</script>
+]]></script>
+
 [% INCLUDE include_footer.html %]  
