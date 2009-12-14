@@ -3,7 +3,7 @@
     <a href="/paste/[% paste.id %]">[% paste.title %]</a>
   </span>
   &rarr;
-  <em>[% paste.highlightPretty %]</em>
+  <em>[% paste.highlightPretty %] ([% paste.comments.size %] comments)</em>
 </p>
 <small>[% paste.author ? "by $paste.author" : "" %]</small>
 <small>at [% paste.created %]</small>

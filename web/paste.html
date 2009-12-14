@@ -4,4 +4,70 @@
 [% INCLUDE include_paste.html %]
 [% INCLUDE include_highlight.html %]
 
+<div class="leave-comment">
+  [% IF patch.comments.size > -1 %]
+    <a class="open-comment" href="#">Leave a comment</a>
+  [% ELSE %]
+    <em>No comments at this time. <a class="open-comment" href="#">Care to leave one?</a></em>
+  [% END %]
+</div>
+
+<div style="display: none" class="comment-box">
+  <a class="hide-comment" href="#">Hide</a>
+  <form method="POST" action="/paste/[% paste.id %]/comments" class="comment">
+    <label>Your name</label>
+    <input class="author" type="text" name="author" value="Lumberg" />
+    <textarea class="content">Didn't you get the memo? The new coversheet is supposed to go on all the TPS reports, buddy</textarea>
+    <input type="submit" value="Submit" />
+  </form>
+</div>
+<br />
+
+[% FOREACH comment IN paste.comments %]
+<div class="comment [% loop.count() % 2 ? "bg1": "" %]">
+  <small style="float: right"><a href="[% comment.id %]">[x]</a></small>
+  <p>[% comment.author %]: [% comment.comment %]</p>
+</div>
+[% END %]
+
+<script>
+$(document).ready(function() {
+  function hideCommentBox() {
+    $('.comment-box').hide(300);
+    $('.leave-comment').show(200);
+  }
+
+  $('.open-comment').click(function() {
+    $('.leave-comment').hide(300);
+    $('.comment-box').show(200);
+  });
+
+  $('.hide-comment').click(function() {
+    hideCommentBox();
+  });
+
+  $('form.comment').submit(function () {
+    try{
+      $.ajax({
+        async: false,
+        type: 'POST',
+        url: $(this).attr('action'),
+        dataType: 'json',
+        data: {
+          comment: $("form.comment textarea.content").val(),
+          author:  $("form.comment input.author").val()
+        },
+        success: function() {
+          hideCommentBox();
+          // "soft" add the comment here
+        }
+      });
+    }
+    catch(e) {
+      alert(e);
+    }
+    return false;
+  });
+});
+</script>
 [% INCLUDE include_footer.html %]  

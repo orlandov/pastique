@@ -1,7 +1,9 @@
 system.use("com.joyent.Sammy");
 system.use("com.joyent.Resource");
+system.use("org.json.json2");
 
 var Paste = new Resource("paste");
+var Comment = new Resource("comment");
 
 var highlights = {
     'cpp': 'C++',
@@ -26,6 +28,30 @@ before(function () {
 
 GET("/paste/new", function() {
     return template("new.html");
+});
+
+POST(/\/paste\/([^/]+)\/comments$/, function(pasteId) {
+    this.paste = Paste.get(pasteId);
+    this.response.mime = 'application/json';
+
+    var comment = new Comment();
+    comment.author = this.request.body.author;
+    comment.comment = this.request.body.comment;
+    comment.paste_id = this.paste.id;
+    comment.save();
+
+    return JSON.stringify({ ok: true });
+});
+
+GET(/\/paste\/([^/]+)\/delete$/, function(pasteId) {
+    try {
+        this.paste = Paste.get(pasteId);
+        this.paste.remove();
+    }
+    catch (e) {
+        return uneval(e);
+    }
+    return redirect('/');
 });
 
 GET(/\/paste\/([^/]+)\/delete$/, function(pasteId) {
@@ -63,13 +89,17 @@ function setHighlight(paste) {
 GET(/\/paste\/(.+)$/, function (pasteId) {
     this.paste = Paste.get(pasteId);
     setHighlight(this.paste);
+    var comments = Comment.search({ paste_id: this.paste.id });
+    this.paste.comments = comments || [];
     return template("paste.html");
 });
 
 GET("/", function() {
-    this.pastes = Paste.search({});
+    this.pastes = Paste.search({ });
     this.pastes.forEach(function (paste) {
         setHighlight(paste);    
+        var comments = Comment.search({ paste_id: paste.id });
+        paste.comments = comments || [];
     });
     return template('index.html');
 });
