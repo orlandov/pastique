@@ -2,8 +2,31 @@ system.use("com.joyent.Sammy");
 system.use("com.joyent.Resource");
 system.use("org.json.json2");
 
-var Paste = new Resource("paste");
+function setHighlight(paste) {
+    // XXX need to find out how to extend ashb's Template's filters
+    var highlight = paste.highlight;
+    paste.highlightPretty = highlights[highlight];
+    paste.highlightLower = highlight.toLowerCase();
+    paste.highlightCap =
+        highlight.substring(0, 1).toUpperCase() + highlight.slice(1);
+}
+
 var Comment = new Resource("comment");
+
+var Paste = new Resource("paste", {
+    '@get': function () {
+        setHighlight(this);
+        var comments = Comment.search({ paste_id: this.id });
+        this.comments = comments;
+    },
+    '@remove': function () {
+        // XXX there's got to be a better way to do this...
+        var comments = Comment.search({ paste_id: this.id });
+        comments.forEach(function (comment) {
+            comment.remove();    
+        });
+    }
+});
 
 var highlights = {
     'cpp': 'C++',
@@ -77,29 +100,13 @@ POST(/\/paste\/?$/, function() {
     return redirect('/paste/' + this.paste.id);
 });
 
-function setHighlight(paste) {
-    // XXX need to find out how to extend ashb's Template's filters
-    var highlight = paste.highlight;
-    paste.highlightPretty = highlights[highlight];
-    paste.highlightLower = highlight.toLowerCase();
-    paste.highlightCap =
-        highlight.substring(0, 1).toUpperCase() + highlight.slice(1);
-}
 
 GET(/\/paste\/(.+)$/, function (pasteId) {
     this.paste = Paste.get(pasteId);
-    setHighlight(this.paste);
-    var comments = Comment.search({ paste_id: this.paste.id });
-    this.paste.comments = comments || [];
     return template("paste.html");
 });
 
 GET("/", function() {
-    this.pastes = Paste.search({ });
-    this.pastes.forEach(function (paste) {
-        setHighlight(paste);    
-        var comments = Comment.search({ paste_id: paste.id });
-        paste.comments = comments || [];
-    });
+    this.pastes = Paste.search({});
     return template('index.html');
 });

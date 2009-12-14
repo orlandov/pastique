@@ -5,7 +5,7 @@
 [% INCLUDE include_highlight.html %]
 
 <div class="leave-comment">
-  [% IF patch.comments.size > -1 %]
+  [% IF paste.comments.length > 0 %]
     <a class="open-comment" href="#">Leave a comment</a>
   [% ELSE %]
     <em>No comments at this time. <a class="open-comment" href="#">Care to leave one?</a></em>
@@ -23,11 +23,15 @@
 </div>
 <br />
 
-[% FOREACH comment IN paste.comments %]
-<div class="comment [% loop.count() % 2 ? "bg1": "" %]">
-  <small style="float: right"><a href="[% comment.id %]">[x]</a></small>
-  <p>[% comment.author %]: [% comment.comment %]</p>
-</div>
+[% IF paste.comments.size %]
+  <div class="comments">
+    [% FOREACH comment IN paste.comments %]
+    <div class="comment [% loop.count() % 2 ? "bg1": "" %]">
+      <small style="float: right"><a href="[% comment.id %]">[x]</a></small>
+      <p>[% comment.author %] &rarr; [% comment.comment %]</p>
+    </div>
+    [% END %]
+  </div>
 [% END %]
 
 <script>
@@ -47,19 +51,22 @@ $(document).ready(function() {
   });
 
   $('form.comment').submit(function () {
+    var comment = $("form.comment textarea.content").val();
+    var author = $("form.comment input.author").val();
+
     try{
       $.ajax({
         async: false,
         type: 'POST',
         url: $(this).attr('action'),
         dataType: 'json',
-        data: {
-          comment: $("form.comment textarea.content").val(),
-          author:  $("form.comment input.author").val()
-        },
+        data: { 'comment': comment, 'author':  author },
         success: function() {
           hideCommentBox();
+          // TODO check for errors
           // "soft" add the comment here
+          // instead of a forced reload
+          window.location.reload(true);
         }
       });
     }
@@ -70,4 +77,5 @@ $(document).ready(function() {
   });
 });
 </script>
+
 [% INCLUDE include_footer.html %]  
