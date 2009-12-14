@@ -8,6 +8,7 @@ var highlights = {
     'cpp': 'C++',
     'cSharp': 'C#',
     'css': 'CSS',
+    'diff': 'diff / patch',
     'java': 'Java',
     'jScript': 'JavaScript',
     'php': 'PHP',

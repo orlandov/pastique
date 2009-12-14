@@ -1,0 +1,14 @@
+<select name="highlight">
+  [% FOREACH h IN highlights.keys %]
+    [% IF h == "jScript" %]
+      [% SET selected = "1" %]
+    [% ELSE %]
+      [% SET selected = "" %]
+    [% END %]
+
+    <option value="[% h %]"
+      [%   selected ? "selected=\"selected\"" : "" %]>
+      [% highlights.$h %]
+    </option>
+  [% END %]
+</select>
