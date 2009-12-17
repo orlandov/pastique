@@ -16,9 +16,14 @@ var Comment = new Resource("comment");
 var Paste = new Resource("paste", {
     '@get': function () {
         setHighlight(this);
-        var comments = Comment.search({ paste_id: this.id },
-                                      { sort: 'created' });
-        this.comments = comments;
+        try {
+            var comments = Comment.search({ paste_id: this.id },
+                                          { sort: 'created' });
+            this.comments = comments;
+        }
+        catch(e) {
+            this.comments = []
+        }
     },
     '@remove': function () {
         // XXX there's got to be a better way to do this...
@@ -108,6 +113,11 @@ GET(/\/paste\/(.+)$/, function (pasteId) {
 });
 
 GET("/", function() {
-    this.pastes = Paste.search({}, { sort: 'created', reverse: true });
+    try {
+        this.pastes = Paste.search({}, { sort: 'created', reverse: true });
+    }
+    catch (e) {
+        this.pastes = []
+    }
     return template('index.html');
 });
